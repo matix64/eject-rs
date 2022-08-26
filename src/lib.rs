@@ -31,6 +31,8 @@ mod tests {
     fn test_real() {
         #[allow(unreachable_code)]
         let drive_path = env::var("TEST_CD").unwrap_or_else(|_| {
+            #[cfg(windows)]
+            return "CdRom0".to_owned();
             #[cfg(target_os = "linux")]
             return "/dev/cdrom".to_owned();
             panic!("Set env. variable TEST_CD to your cd drive's path")

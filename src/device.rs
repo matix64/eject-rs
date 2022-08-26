@@ -19,7 +19,7 @@ impl Device {
     ///
     /// # Arguments
     ///
-    /// * `path` - The path of the device. For example `/dev/cdrom` on Linux or `\\.\D:` on Windows.
+    /// * `path` - The path of the device. For example `/dev/cdrom` on Linux or `D:` on Windows.
     /// Do not use paths to the drive's file system such as `/cdrom` or `D:\`
     pub fn open(name: &str) -> Result<Self> {
         Ok(Self {

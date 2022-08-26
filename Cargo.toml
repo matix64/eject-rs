@@ -1,0 +1,28 @@
+[package]
+name = "eject"
+description = "A crate for controlling the tray of your CD drive"
+version = "0.1.0"
+license = "MIT"
+repository = "https://github.com/matix64/eject-rs"
+authors = ["Matias Perez <matias.pz@proton.me>"]
+categories = ["hardware-support"]
+keywords = ["cd", "cd-rom", "cdsnuts", "dvd"]
+readme = "README.md"
+edition = "2021"
+
+[dependencies]
+thiserror = "1.0"
+
+[target.'cfg(windows)'.dependencies.windows]
+version = "0.39.0"
+features = [
+    "Win32_Foundation",
+    "Win32_Storage_FileSystem",
+    "Win32_Security",
+    "Win32_System_IO",
+    "Win32_System_Ioctl"
+]
+
+[target.'cfg(unix)'.dependencies.nix]
+version = "0.25.0"
+features = ["ioctl"]

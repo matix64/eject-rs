@@ -9,10 +9,10 @@ use windows::{
     Win32::{
         Foundation::{CloseHandle, HANDLE},
         Storage::FileSystem::{
-            CreateFileW, FILE_ATTRIBUTE_NORMAL, FILE_GENERIC_READ, FILE_SHARE_READ,
+            CreateFileW, FILE_FLAGS_AND_ATTRIBUTES, FILE_GENERIC_READ, FILE_SHARE_READ,
             FILE_SHARE_WRITE, OPEN_EXISTING,
         },
-        System::{Ioctl::IOCTL_STORAGE_EJECTION_CONTROL, IO::DeviceIoControl},
+        System::{Ioctl::IOCTL_STORAGE_MEDIA_REMOVAL, IO::DeviceIoControl},
     },
 };
 
@@ -27,7 +27,7 @@ impl DeviceHandle {
                 FILE_SHARE_READ | FILE_SHARE_WRITE,
                 null(),
                 OPEN_EXISTING,
-                FILE_ATTRIBUTE_NORMAL,
+                FILE_FLAGS_AND_ATTRIBUTES(0),
                 HANDLE(0),
             )
         }?;
@@ -50,11 +50,7 @@ impl DeviceHandle {
 
     pub fn set_ejection_lock(&self, lock: bool) -> Result<()> {
         unsafe {
-            self.ioctl(
-                IOCTL_STORAGE_EJECTION_CONTROL,
-                Some(&(lock as i32).to_ne_bytes()),
-                None,
-            )?;
+            self.ioctl(IOCTL_STORAGE_MEDIA_REMOVAL, Some(&[lock as u8]), None)?;
         }
         Ok(())
     }

@@ -14,7 +14,7 @@ impl DeviceHandle {
     pub fn open(path: impl AsRef<Path>) -> Result<Self> {
         match open(
             path.as_ref(),
-            OFlag::O_RDWR | OFlag::O_NONBLOCK,
+            OFlag::O_RDONLY | OFlag::O_NONBLOCK,
             Mode::empty(),
         ) {
             Ok(handle) => Ok(Self(handle)),

@@ -40,7 +40,10 @@ impl Device {
     /// Prevents the medium from being ejected, for example by pressing the button on a CD drive.
     /// In case of success returns an [EjectionLock] that will release the lock when dropped.
     ///
-    /// Note that some devices silently ignore this command.
+    /// # Platform specific behavior
+    ///
+    /// **Linux:** Many distros are configured in a way that makes this call useless.
+    /// See <https://unix.stackexchange.com/a/104935>
     pub fn lock_ejection(&self) -> Result<EjectionLock> {
         self.handle.set_ejection_lock(true)?;
         Ok(EjectionLock { device: self })

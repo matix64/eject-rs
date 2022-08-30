@@ -1,6 +1,7 @@
 use crate::error::{Error, ErrorKind};
 use windows::Win32::Foundation::{
-    GetLastError, ERROR_ACCESS_DENIED, ERROR_FILE_NOT_FOUND, ERROR_INVALID_NAME, WIN32_ERROR,
+    GetLastError, ERROR_ACCESS_DENIED, ERROR_FILE_NOT_FOUND, ERROR_INVALID_NAME,
+    ERROR_PATH_NOT_FOUND, WIN32_ERROR,
 };
 
 impl Error {
@@ -36,7 +37,7 @@ impl From<windows::core::Error> for Error {
 impl ErrorKind {
     fn from_os_err(err: WIN32_ERROR) -> Self {
         match err {
-            ERROR_FILE_NOT_FOUND => Self::NotFound,
+            ERROR_FILE_NOT_FOUND | ERROR_PATH_NOT_FOUND => Self::NotFound,
             ERROR_ACCESS_DENIED => Self::AccessDenied,
             ERROR_INVALID_NAME => Self::InvalidPath,
             _ => Self::Unknown,

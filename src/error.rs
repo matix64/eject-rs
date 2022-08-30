@@ -9,13 +9,6 @@ pub struct Error {
     pub kind: ErrorKind,
 }
 
-impl Error {
-    pub(crate) fn with_kind(mut self, kind: ErrorKind) -> Self {
-        self.kind = kind;
-        self
-    }
-}
-
 impl From<Error> for std::io::Error {
     fn from(e: Error) -> Self {
         Self::from_raw_os_error(e.code)

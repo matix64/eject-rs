@@ -15,7 +15,7 @@ impl From<nix::errno::Errno> for ErrorKind {
         use nix::errno::Errno;
         match e {
             Errno::ENOSYS | Errno::EOPNOTSUPP => Self::UnsupportedOperation,
-            Errno::EACCES => Self::AccessDenied,
+            Errno::EPERM | Errno::EACCES => Self::AccessDenied,
             Errno::ENOENT => Self::NotFound,
             Errno::ENAMETOOLONG => Self::InvalidPath,
             _ => Self::Unknown,

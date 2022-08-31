@@ -13,6 +13,7 @@
 //! cdrom.eject().unwrap();
 //! ```
 
+#![deny(unsafe_op_in_unsafe_fn)]
 #![warn(missing_docs)]
 
 /// Interact with a specific device.

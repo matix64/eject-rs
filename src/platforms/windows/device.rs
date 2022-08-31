@@ -1,7 +1,9 @@
 use super::util::pcwstr;
 use crate::error::{Error, Result};
 use std::{
+    ffi::OsString,
     os::raw::c_void,
+    path::Path,
     ptr::{null, null_mut},
 };
 use windows::{
@@ -19,10 +21,12 @@ use windows::{
 pub struct DeviceHandle(HANDLE);
 
 impl DeviceHandle {
-    pub fn open(name: &str) -> Result<Self> {
+    pub fn open(path: impl AsRef<Path>) -> Result<Self> {
+        let mut full_path = OsString::from("\\\\?\\");
+        full_path.push(path.as_ref().as_os_str());
         let handle = unsafe {
             CreateFileW(
-                pcwstr(&format!("\\\\?\\{}", name)).unwrap(),
+                pcwstr(&full_path).unwrap(),
                 FILE_GENERIC_READ,
                 FILE_SHARE_READ | FILE_SHARE_WRITE,
                 null(),
@@ -72,16 +76,18 @@ impl DeviceHandle {
         } else {
             (null_mut(), 0)
         };
-        let ok = DeviceIoControl(
-            self.0,
-            control_code,
-            in_buffer,
-            in_buffer_size,
-            out_buffer,
-            out_buffer_size,
-            (&mut bytes_returned) as *mut _,
-            null_mut(),
-        );
+        let ok = unsafe {
+            DeviceIoControl(
+                self.0,
+                control_code,
+                in_buffer,
+                in_buffer_size,
+                out_buffer,
+                out_buffer_size,
+                (&mut bytes_returned) as *mut _,
+                null_mut(),
+            )
+        };
         if !ok.as_bool() {
             if let Some(err) = Error::get_last_error() {
                 return Err(err);

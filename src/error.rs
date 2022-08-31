@@ -9,6 +9,18 @@ pub struct Error {
     pub kind: ErrorKind,
 }
 
+impl Error {
+    /// Return the OS-specific error code or `None` if the
+    /// error doesn't come directly from the OS.
+    pub fn os_code(&self) -> Option<i32> {
+        if self.code == 0 {
+            None
+        } else {
+            Some(self.code)
+        }
+    }
+}
+
 impl From<Error> for std::io::Error {
     fn from(e: Error) -> Self {
         if e.code == 0 {

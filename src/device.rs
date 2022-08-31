@@ -1,6 +1,7 @@
 use crate::{error::Result, platform::device::DeviceHandle};
+use std::path::Path;
 
-/// A reference to a drive that can be used to send commands.
+/// A reference to a device that can be used to send commands.
 ///
 /// # Examples
 ///
@@ -15,15 +16,22 @@ pub struct Device {
 }
 
 impl Device {
-    /// Opens a handle to a drive.
+    /// Opens a handle to a device.
     ///
     /// # Arguments
     ///
-    /// * `path` - The path of the device. For example `/dev/cdrom` on Linux or `D:` on Windows.
-    /// Do not use paths to the drive's file system such as `/cdrom` or `D:\`
-    pub fn open(name: &str) -> Result<Self> {
+    /// `path` - The path of the device.
+    ///
+    /// On **Linux** this is the path of the device's file, which almost always
+    /// will be inside `/dev`. For example: `/dev/cdrom`. Do not use paths to a drive's mount point.
+    ///
+    /// On **Windows** this is the path you would use with `CreateFile` but
+    /// without the `\\?\` or `\\.\` prefix. Examples of correct paths
+    /// include `D:` (but not `D:\`), `CdRom0` and `Volume{26a21bda-a627-11d7-9931-806e6f6e6963}`.
+    /// See [docs.microsoft.com](https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilew#physical-disks-and-volumes).
+    pub fn open(path: impl AsRef<Path>) -> Result<Self> {
         Ok(Self {
-            handle: DeviceHandle::open(name)?,
+            handle: DeviceHandle::open(path)?,
         })
     }
 

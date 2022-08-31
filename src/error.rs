@@ -9,7 +9,7 @@
 //! assert_eq!(error.kind(), ErrorKind::NotFound);
 //! ```
 //!
-//! You can convert an [Error](crate::error::ErrorKind) to an [std::io::Error]
+//! You can convert an [Error](crate::error::Error) to an [std::io::Error]
 //! ```
 //! use eject::device::Device;
 //! use std::{fs::File, io};
@@ -22,7 +22,7 @@
 //! assert_eq!(std_err.raw_os_error(), eject_err.raw_os_error());
 //! ```
 //!
-//! If an error originated in the OS, you can get its OS-specific code.
+//! If an error originated in the OS, you can get its OS specific code.
 //! ```
 //! use eject::device::Device;
 //!
@@ -78,7 +78,7 @@ impl From<Error> for std::io::Error {
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 #[non_exhaustive]
-/// General categories of OS errors and internal crate errors.
+/// General categories for OS and library errors.
 ///
 /// Bear in mind that errors that are currently `Unknown` may be moved to
 /// a different category in the future. This would not be considered a breaking

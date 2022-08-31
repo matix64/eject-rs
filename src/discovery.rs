@@ -1,3 +1,5 @@
+//! Find available devices.
+
 use crate::{
     device::Device,
     error::{Error, ErrorKind, Result},

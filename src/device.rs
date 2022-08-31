@@ -1,3 +1,5 @@
+//! Interact with a specific device.
+
 use crate::{error::Result, platform::device::DeviceHandle};
 use std::path::Path;
 

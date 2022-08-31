@@ -16,9 +16,7 @@
 #![deny(unsafe_op_in_unsafe_fn)]
 #![warn(missing_docs)]
 
-/// Interact with a specific device.
 pub mod device;
-/// Find available devices.
 pub mod discovery;
 pub mod error;
 #[cfg_attr(windows, path = "platforms/windows/mod.rs")]

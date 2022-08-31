@@ -6,7 +6,7 @@
 //! use eject::{device::Device, error::ErrorKind};
 //!
 //! let error = Device::open("doesntexist").err().unwrap();
-//! assert_eq!(error.kind, ErrorKind::NotFound);
+//! assert_eq!(error.kind(), ErrorKind::NotFound);
 //! ```
 //!
 //! You can convert an [Error](crate::error::ErrorKind) to an [std::io::Error]
@@ -44,13 +44,13 @@ pub struct Error {
     /// OS error code, or 0 if the error doesn't come from the OS.
     pub(crate) code: i32,
     /// User friendly error messages, which come from the OS in OS errors.
-    pub message: String,
+    pub(crate) message: String,
     /// OS agnostic error category.
-    pub kind: ErrorKind,
+    pub(crate) kind: ErrorKind,
 }
 
 impl Error {
-    /// Returns the OS-specific error code or `None` if the
+    /// Returns the OS specific error code or `None` if the
     /// error doesn't come directly from the OS.
     pub fn os_code(&self) -> Option<i32> {
         if self.code == 0 {
@@ -58,6 +58,11 @@ impl Error {
         } else {
             Some(self.code)
         }
+    }
+
+    /// Returns an OS agnostic category for this error.
+    pub fn kind(&self) -> ErrorKind {
+        self.kind
     }
 }
 

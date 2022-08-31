@@ -8,7 +8,7 @@ use crate::{
 
 /// Tries to find and open a CD-ROM device.
 ///
-/// If no device could be found, this will return an [Error] with `error.kind: NotFound`.
+/// If no device could be found, this will return an [Error] with `error.kind() = NotFound`.
 /// Other errors indicate that a device was found but an error happened
 /// while trying to open it.
 pub fn first_cdrom() -> Result<Device> {

@@ -17,7 +17,6 @@
 pub mod device;
 /// Find available devices.
 pub mod discovery;
-/// Errors returned by this crate.
 pub mod error;
 #[cfg_attr(windows, path = "platforms/windows/mod.rs")]
 #[cfg_attr(target_os = "linux", path = "platforms/linux/mod.rs")]

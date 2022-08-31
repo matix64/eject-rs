@@ -43,7 +43,9 @@ pub type Result<T> = core::result::Result<T, Error>;
 pub struct Error {
     /// OS error code, or 0 if the error doesn't come from the OS.
     pub(crate) code: i32,
+    /// User friendly error messages, which come from the OS in OS errors.
     pub message: String,
+    /// OS agnostic error category.
     pub kind: ErrorKind,
 }
 
@@ -69,7 +71,7 @@ impl From<Error> for std::io::Error {
     }
 }
 
-#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 #[non_exhaustive]
 /// General categories of OS errors and internal crate errors.
 ///
@@ -79,10 +81,17 @@ impl From<Error> for std::io::Error {
 ///
 /// See the [error][crate::error] module docs for details and examples.
 pub enum ErrorKind {
+    /// The operation failed due to a permission issue.
     AccessDenied,
+    /// The file or path doesn't exist.
     NotFound,
+    /// The path contains invalid characters or is improperly formatted.
     InvalidPath,
+    /// The device doesn't support performing this operation.
+    /// This can often happen when a device is not of the type you expect,
+    /// or you've opened something that is not a device, like a regular file.
     UnsupportedOperation,
+    /// The category of this error could not be determined.
     Unknown,
 }
 

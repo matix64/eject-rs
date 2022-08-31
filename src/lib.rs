@@ -13,6 +13,8 @@
 //! cdrom.eject().unwrap();
 //! ```
 
+#![warn(missing_docs)]
+
 /// Interact with a specific device.
 pub mod device;
 /// Find available devices.

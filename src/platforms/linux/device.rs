@@ -1,5 +1,8 @@
 use super::{cdrom, scsi};
-use crate::error::{ErrorKind, Result};
+use crate::{
+    device::DriveStatus,
+    error::{ErrorKind, Result},
+};
 use nix::{
     fcntl::{open, OFlag},
     libc::EINVAL,
@@ -58,6 +61,10 @@ impl DeviceHandle {
             return Ok(());
         }
         scsi::set_ejection_lock(self.0, locked)
+    }
+
+    pub fn status(&self) -> Result<DriveStatus> {
+        cdrom::status(self.0, 0)
     }
 }
 

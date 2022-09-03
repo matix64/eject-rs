@@ -1,5 +1,8 @@
 //! Interact with a specific device.
 
+mod status;
+
+pub use self::status::DriveStatus;
 use crate::{error::Result, platform::device::DeviceHandle};
 use std::path::Path;
 
@@ -57,6 +60,12 @@ impl Device {
     pub fn lock_ejection(&self) -> Result<EjectionLock> {
         self.handle.set_ejection_lock(true)?;
         Ok(EjectionLock { device: self })
+    }
+
+    /// Gets the position of the tray (if it exists) and whether
+    /// there's data loaded in this drive.
+    pub fn status(&self) -> Result<DriveStatus> {
+        self.handle.status()
     }
 }
 

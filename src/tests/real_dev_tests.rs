@@ -34,6 +34,12 @@ fn c_lock_ejection() {
     drop(guard);
 }
 
+#[test]
+#[ignore]
+fn status() {
+    println!("{:?}", get_device().status().unwrap());
+}
+
 fn get_device() -> Device {
     #[cfg(windows)]
     sleep(Duration::from_secs_f32(0.5));

@@ -7,6 +7,8 @@ pub enum DriveStatus {
     TrayOpen,
     /// The drive is not available yet. With CD drives this happens for a few
     /// seconds after the tray is closed.
+    ///
+    /// This status is not supported on Windows. There it'll be reported as [Empty][Self::Empty].
     NotReady,
     /// The drive has data loaded. If it reads from removable media
     /// (e.g. CDs/floppy/SD cards) then one is inserted.

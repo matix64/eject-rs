@@ -20,7 +20,8 @@ features = [
     "Win32_Storage_FileSystem",
     "Win32_Security",
     "Win32_System_IO",
-    "Win32_System_Ioctl"
+    "Win32_System_Ioctl",
+    "Win32_Storage_IscsiDisc"
 ]
 
 [target.'cfg(unix)'.dependencies.nix]

@@ -46,7 +46,7 @@ fn b_status() {
         status = dev.status().unwrap();
     }
     match status {
-        DriveStatus::Empty | DriveStatus::Loaded => println!("status: {status:?} :D"),
+        DriveStatus::Empty | DriveStatus::Loaded => print!("{status:?} ... "),
         DriveStatus::NotReady | DriveStatus::TrayOpen => panic!("status: {status:?} :("),
     }
 }

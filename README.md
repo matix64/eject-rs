@@ -1,7 +1,8 @@
 # Eject
 
-[![Crates.io](https://img.shields.io/crates/d/eject)](https://crates.io/crates/eject)
-[![api-docs](https://docs.rs/eject/badge.svg)](https://docs.rs/eject)
+[![crates.io version](https://img.shields.io/crates/v/eject)](https://crates.io/crates/eject)
+[![crates.io downloads](https://img.shields.io/crates/d/eject)](https://crates.io/crates/eject)
+[![docs.rs](https://img.shields.io/docsrs/eject?logo=docs.rs)](https://docs.rs/eject)
 
 A Rust library for controlling your CD drive's tray.
 

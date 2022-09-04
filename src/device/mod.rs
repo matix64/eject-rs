@@ -3,6 +3,8 @@
 mod status;
 #[cfg(unix)]
 mod unix_trait_impls;
+#[cfg(windows)]
+mod windows_trait_impls;
 
 pub use self::status::DriveStatus;
 use crate::{error::Result, platform::device::DeviceHandle};

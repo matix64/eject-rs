@@ -25,7 +25,7 @@ use windows::{
     },
 };
 
-pub struct DeviceHandle(HANDLE);
+pub struct DeviceHandle(pub HANDLE);
 
 impl DeviceHandle {
     pub fn open(path: impl AsRef<Path>) -> Result<Self> {

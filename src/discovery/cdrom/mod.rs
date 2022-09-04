@@ -1,9 +1,10 @@
-//! Find available devices.
+mod list;
 
+pub use self::list::{cdrom_drives, CdRomDrives};
 use crate::{
     device::Device,
     error::{Error, ErrorKind, Result},
-    platform::discover::CDROM_PATHS,
+    platform::discovery::CDROM_PATHS,
 };
 
 /// Tries to find and open a CD-ROM device.

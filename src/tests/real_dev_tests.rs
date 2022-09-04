@@ -5,7 +5,7 @@
 
 use crate::{
     device::{Device, DriveStatus},
-    discovery::first_cdrom,
+    discovery::{cdrom_drives, first_cdrom},
     error::ErrorKind,
 };
 use std::{
@@ -60,6 +60,15 @@ fn c_lock_ejection() {
     let _ = stdout().flush();
     sleep(Duration::from_secs(5));
     drop(guard);
+}
+
+#[test]
+#[ignore]
+fn d_cdrom_drives_list() {
+    print!(
+        "\n  found drives: {:?}\n... ",
+        cdrom_drives().collect::<Vec<_>>()
+    );
 }
 
 fn get_device() -> Device {

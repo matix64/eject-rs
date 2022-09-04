@@ -40,3 +40,10 @@ impl IntoRawFd for Device {
         fd
     }
 }
+
+impl From<Device> for OwnedFd {
+    #[inline]
+    fn from(dev: Device) -> Self {
+        unsafe { Self::from_raw_fd(dev.into_raw_fd()) }
+    }
+}

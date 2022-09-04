@@ -12,7 +12,6 @@ use std::{
     slice,
 };
 use windows::{
-    core::PCWSTR,
     Win32::System::Ioctl::{IOCTL_STORAGE_EJECT_MEDIA, IOCTL_STORAGE_LOAD_MEDIA2},
     Win32::{
         Foundation::{CloseHandle, HANDLE},
@@ -31,21 +30,25 @@ pub struct DeviceHandle(HANDLE);
 
 impl DeviceHandle {
     pub fn open(path: impl AsRef<Path>) -> Result<Self> {
-        let mut full_path = OsString::from("\\\\?\\");
-        full_path.push(path.as_ref().as_os_str());
-        let full_path = pcwstr(full_path).unwrap();
         let mut result =
-            Self::open_with_access_flags(full_path, FILE_GENERIC_READ | FILE_GENERIC_WRITE);
+            Self::open_with_access_flags(&path, FILE_GENERIC_READ | FILE_GENERIC_WRITE);
         if let Some(ErrorKind::AccessDenied) = result.as_ref().err().map(|e| e.kind) {
-            result = Self::open_with_access_flags(full_path, FILE_GENERIC_READ);
+            result = Self::open_with_access_flags(&path, FILE_GENERIC_READ);
         }
         result
     }
 
-    fn open_with_access_flags(
-        full_path: impl Into<PCWSTR>,
+    pub fn exists(path: impl AsRef<Path>) -> bool {
+        Self::open_with_access_flags(path, FILE_ACCESS_FLAGS(0)).is_ok()
+    }
+
+    pub(crate) fn open_with_access_flags(
+        path: impl AsRef<Path>,
         flags: FILE_ACCESS_FLAGS,
     ) -> Result<Self> {
+        let mut full_path = OsString::from("\\\\?\\");
+        full_path.push(path.as_ref().as_os_str());
+        let full_path = pcwstr(full_path).unwrap();
         let handle = unsafe {
             CreateFileW(
                 full_path,

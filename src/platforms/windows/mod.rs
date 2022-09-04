@@ -1,6 +1,5 @@
 pub mod device;
-pub mod discover;
-pub mod drive_list;
+pub mod discovery;
 mod error;
 mod scsi;
 mod util;

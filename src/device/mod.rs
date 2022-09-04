@@ -50,6 +50,17 @@ impl Device {
         self.handle.retract()
     }
 
+    /// Opens the tray if it's closed, closes it if it's open.
+    /// Returns the new state of the drive after the operation is completed.
+    pub fn toggle_eject(&self) -> Result<DriveStatus> {
+        if self.status()?.tray_open() {
+            self.retract()?;
+        } else {
+            self.eject()?;
+        }
+        self.status()
+    }
+
     /// Prevents the medium from being ejected, for example by pressing the button on a CD drive.
     /// In case of success returns an [EjectionLock] that will release the lock when dropped.
     ///

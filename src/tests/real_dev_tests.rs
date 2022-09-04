@@ -71,6 +71,24 @@ fn d_cdrom_drives_list() {
     );
 }
 
+#[test]
+#[ignore]
+fn e_toggle_eject() {
+    let dev = get_device();
+    for _ in 0..2 {
+        let tray_was_open = dev.status().unwrap().tray_open();
+        let new_status = dev.toggle_eject().unwrap();
+        assert_ne!(new_status.tray_open(), tray_was_open);
+        assert_eq!(new_status.tray_open(), dev.status().unwrap().tray_open());
+    }
+}
+
+#[test]
+#[ignore]
+fn z_finish() {
+    get_device().retract().unwrap();
+}
+
 fn get_device() -> Device {
     #[cfg(windows)]
     sleep(Duration::from_secs_f32(0.5));

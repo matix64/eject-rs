@@ -14,3 +14,13 @@ pub enum DriveStatus {
     /// (e.g. CDs/floppy/SD cards) then one is inserted.
     Loaded,
 }
+
+impl DriveStatus {
+    /// Returns whether this status implies that the tray is open.
+    pub const fn tray_open(&self) -> bool {
+        match self {
+            Self::Empty | Self::Loaded | Self::NotReady => false,
+            Self::TrayOpen => true,
+        }
+    }
+}

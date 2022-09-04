@@ -76,7 +76,7 @@ impl From<Error> for std::io::Error {
     }
 }
 
-#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash, PartialOrd, Ord)]
 #[non_exhaustive]
 /// General categories for OS and library errors.
 ///

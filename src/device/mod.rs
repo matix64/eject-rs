@@ -4,7 +4,7 @@ mod status;
 
 pub use self::status::DriveStatus;
 use crate::{error::Result, platform::device::DeviceHandle};
-use std::path::Path;
+use std::{path::Path, time::Instant};
 
 /// A reference to a device that can be used to send commands.
 ///
@@ -54,12 +54,24 @@ impl Device {
     ///
     /// Returns true after opening and false after closing.
     pub fn toggle_eject(&self) -> Result<bool> {
-        if self.status()?.tray_open() {
-            self.retract()?;
-            Ok(false)
+        if let Ok(status) = self.status() {
+            if status.tray_open() {
+                self.retract()?;
+                Ok(false)
+            } else {
+                self.eject()?;
+                Ok(true)
+            }
         } else {
+            let time = Instant::now();
             self.eject()?;
-            Ok(true)
+            if time.elapsed().as_millis() < 100 {
+                // If it was too fast it was already open
+                self.retract()?;
+                Ok(false)
+            } else {
+                Ok(true)
+            }
         }
     }
 

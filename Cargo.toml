@@ -11,6 +11,7 @@ readme = "README.md"
 edition = "2021"
 
 [dependencies]
+memoffset = "0.6.5"
 thiserror = "1.0"
 
 [target.'cfg(windows)'.dependencies.windows]

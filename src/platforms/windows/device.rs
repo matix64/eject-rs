@@ -9,7 +9,6 @@ use std::{
     os::raw::c_void,
     path::Path,
     ptr::{null, null_mut},
-    slice,
 };
 use windows::{
     Win32::System::Ioctl::{IOCTL_STORAGE_EJECT_MEDIA, IOCTL_STORAGE_LOAD_MEDIA2},
@@ -75,32 +74,32 @@ impl DeviceHandle {
     }
 
     pub fn set_ejection_lock(&self, lock: bool) -> Result<()> {
+        let lock = lock as u8;
         unsafe {
-            self.ioctl(IOCTL_STORAGE_MEDIA_REMOVAL, Some(&[lock as u8]), None)?;
+            self.ioctl(
+                IOCTL_STORAGE_MEDIA_REMOVAL,
+                Some(((&lock) as *const _ as *const c_void, 1)),
+                None,
+            )?;
         }
         Ok(())
     }
 
     pub fn status(&self) -> Result<DriveStatus> {
-        let mut request = ScsiPassThroughDirectSenseBuffer::new(vec![0; 8].into_boxed_slice());
+        const DATA_LEN: usize = 8;
+        let mut request = ScsiPassThroughDirectSenseBuffer::<DATA_LEN>::new();
         request.sptd.DataIn = SCSI_IOCTL_DATA_IN as u8;
         request.sptd.CdbLength = 10;
         request.sptd.Cdb[0] = 0x4a; // Command: GET EVENT/STATUS NOTIFICATION
         request.sptd.Cdb[1] = 1; // Polled
         request.sptd.Cdb[4] = 0x10; // Event class: media
-        request.sptd.Cdb[7] = (request.data.len() >> 8) as u8;
-        request.sptd.Cdb[8] = request.data.len() as u8;
-        let in_buffer = unsafe {
-            slice::from_raw_parts(&request as *const _ as *const u8, size_of_val(&request))
-        };
-        let out_buffer = unsafe {
-            slice::from_raw_parts_mut(&mut request as *mut _ as *mut u8, size_of_val(&request))
-        };
+        request.sptd.Cdb[7] = (DATA_LEN >> 8) as u8;
+        request.sptd.Cdb[8] = DATA_LEN as u8;
         unsafe {
             self.ioctl(
                 IOCTL_SCSI_PASS_THROUGH_DIRECT,
-                Some(in_buffer),
-                Some(out_buffer),
+                Some((&request as *const _ as *const c_void, size_of_val(&request))),
+                Some((&mut request as *mut _ as *mut c_void, size_of_val(&request))),
             )?;
         }
         let media_status = request.data[5];
@@ -114,28 +113,20 @@ impl DeviceHandle {
     unsafe fn ioctl(
         &self,
         control_code: u32,
-        in_buffer: Option<&[u8]>,
-        out_buffer: Option<&mut [u8]>,
+        in_buffer: Option<(*const c_void, usize)>,
+        out_buffer: Option<(*mut c_void, usize)>,
     ) -> Result<usize> {
         let mut bytes_returned = 0u32;
-        let (in_buffer, in_buffer_size) = if let Some(buf) = in_buffer {
-            (buf.as_ptr() as *const c_void, buf.len() as u32)
-        } else {
-            (null(), 0)
-        };
-        let (out_buffer, out_buffer_size) = if let Some(buf) = out_buffer {
-            (buf.as_ptr() as *mut c_void, buf.len() as u32)
-        } else {
-            (null_mut(), 0)
-        };
+        let (in_buffer, in_buffer_size) = in_buffer.unwrap_or((null(), 0));
+        let (out_buffer, out_buffer_size) = out_buffer.unwrap_or((null_mut(), 0));
         let ok = unsafe {
             DeviceIoControl(
                 self.0,
                 control_code,
                 in_buffer,
-                in_buffer_size,
+                in_buffer_size as u32,
                 out_buffer,
-                out_buffer_size,
+                out_buffer_size as u32,
                 (&mut bytes_returned) as *mut _,
                 null_mut(),
             )

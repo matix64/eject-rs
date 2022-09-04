@@ -9,7 +9,7 @@ impl AsRawFd for Device {
 }
 
 impl AsFd for Device {
-    fn as_fd<'a>(&'a self) -> BorrowedFd<'a> {
+    fn as_fd(&self) -> BorrowedFd<'_> {
         unsafe { BorrowedFd::borrow_raw(self.handle.0) }
     }
 }

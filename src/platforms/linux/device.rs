@@ -11,7 +11,7 @@ use nix::{
 };
 use std::{os::unix::prelude::RawFd, path::Path};
 
-pub struct DeviceHandle(RawFd);
+pub struct DeviceHandle(pub RawFd);
 
 impl DeviceHandle {
     pub fn open(path: impl AsRef<Path>) -> Result<Self> {

@@ -42,10 +42,7 @@ impl DeviceHandle {
         Self::open_with_access_flags(path, FILE_ACCESS_FLAGS(0)).is_ok()
     }
 
-    pub(crate) fn open_with_access_flags(
-        path: impl AsRef<Path>,
-        flags: FILE_ACCESS_FLAGS,
-    ) -> Result<Self> {
+    fn open_with_access_flags(path: impl AsRef<Path>, flags: FILE_ACCESS_FLAGS) -> Result<Self> {
         let mut full_path = OsString::from("\\\\?\\");
         full_path.push(path.as_ref().as_os_str());
         let full_path = pcwstr(full_path).unwrap();

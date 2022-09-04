@@ -51,14 +51,16 @@ impl Device {
     }
 
     /// Opens the tray if it's closed, closes it if it's open.
-    /// Returns the new state of the drive after the operation is completed.
-    pub fn toggle_eject(&self) -> Result<DriveStatus> {
+    ///
+    /// Returns true after opening and false after closing.
+    pub fn toggle_eject(&self) -> Result<bool> {
         if self.status()?.tray_open() {
             self.retract()?;
+            Ok(false)
         } else {
             self.eject()?;
+            Ok(true)
         }
-        self.status()
     }
 
     /// Prevents the medium from being ejected, for example by pressing the button on a CD drive.

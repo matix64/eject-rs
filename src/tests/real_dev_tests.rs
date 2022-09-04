@@ -77,9 +77,9 @@ fn e_toggle_eject() {
     let dev = get_device();
     for _ in 0..2 {
         let tray_was_open = dev.status().unwrap().tray_open();
-        let new_status = dev.toggle_eject().unwrap();
-        assert_ne!(new_status.tray_open(), tray_was_open);
-        assert_eq!(new_status.tray_open(), dev.status().unwrap().tray_open());
+        let tray_opened = dev.toggle_eject().unwrap();
+        assert_ne!(tray_opened, tray_was_open);
+        assert_eq!(tray_opened, dev.status().unwrap().tray_open());
     }
 }
 

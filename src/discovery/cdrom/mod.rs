@@ -1,6 +1,6 @@
 mod list;
 
-pub use self::list::{cdrom_drives, CdRomDrives};
+pub use self::list::{cd_drives, CdDrives};
 use crate::{
     device::Device,
     error::{Error, ErrorKind, Result},

@@ -3,17 +3,17 @@ use std::path::PathBuf;
 pub const CDROM_PATHS: &[&str] = &["/dev/cdrom", "/dev/sr0"];
 
 #[derive(Debug, Clone)]
-pub struct CdRomDrives {
+pub struct CdDrives {
     next_i: u8,
 }
 
-impl CdRomDrives {
+impl CdDrives {
     pub fn new() -> Self {
         Self { next_i: 0 }
     }
 }
 
-impl Iterator for CdRomDrives {
+impl Iterator for CdDrives {
     type Item = PathBuf;
 
     fn next(&mut self) -> Option<Self::Item> {

@@ -2,4 +2,4 @@
 
 mod cdrom;
 
-pub use self::cdrom::{cdrom_drives, first_cdrom, CdRomDrives};
+pub use self::cdrom::{cd_drives, first_cdrom, CdDrives};

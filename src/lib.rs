@@ -1,17 +1,36 @@
-//! A crate for controlling the tray of your CD drive.
+//! A crate to control the tray of your CD drive.
 //!
 //! # Example
 //!
-//! ```no_run
-//! use eject::{device::Device, discovery::first_cdrom};
+//!```no_run
+//! use eject::{device::{Device, DriveStatus}, discovery::cd_drives};
 //!
-//! // Find a drive by path
-//! let cdrom = Device::open("/dev/cdrom").unwrap();
-//! // Or let the crate find one for you
-//! let cdrom = first_cdrom().unwrap();
-//! // Open the drive's tray
-//! cdrom.eject().unwrap();
-//! ```
+//! # fn main() -> eject::error::Result<()> {
+//! // Find a drive by its path
+//! let cdrom = Device::open("/dev/cdrom")?;
+//! // Open the tray
+//! cdrom.eject()?;
+//!
+//! // Get the paths of all CD drives
+//! for path in cd_drives() {
+//!     // Print the path
+//!     println!("Drive {:?}:", path);
+//!     // Access the drive
+//!     let drive = Device::open(path)?;
+//!     // Print its status
+//!     match drive.status()? {
+//!         DriveStatus::Empty =>
+//!             println!("The tray is closed and no disc is inside"),
+//!         DriveStatus::TrayOpen =>
+//!             println!("The tray is open"),
+//!         DriveStatus::NotReady =>
+//!             println!("This drive is not ready yet"),
+//!         DriveStatus::Loaded =>
+//!             println!("There's a disc inside"),
+//!     }
+//! }
+//! # Ok(())}
+//!```
 
 #![deny(unsafe_op_in_unsafe_fn)]
 #![warn(missing_docs)]

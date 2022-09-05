@@ -1,12 +1,12 @@
 [package]
 name = "eject"
-description = "A crate for controlling the tray of your CD drive"
+description = "A crate to control the tray of your CD drive"
 version = "0.1.0"
 license = "MIT"
 repository = "https://github.com/matix64/eject-rs"
 authors = ["Matias Perez <matias.pz@proton.me>"]
 categories = ["hardware-support"]
-keywords = ["cd", "cd-rom", "cdsnuts", "dvd"]
+keywords = ["cd", "cd-rom", "cup-holder", "dvd"]
 readme = "README.md"
 edition = "2021"
 

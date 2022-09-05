@@ -21,8 +21,8 @@ pub fn cd_drives() -> CdDrives {
     }
 }
 
-/// An iterator over the paths of available CD drives.
-/// Created with [cd_drives](super::cd_drives).
+/// An iterator over the paths of all available CD drives.
+/// Created with [`cd_drives`](super::cd_drives).
 pub struct CdDrives {
     inner: CdDrivesImpl,
 }

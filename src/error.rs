@@ -1,7 +1,7 @@
 //! Errors returned by this crate.
 //!
 //! Errors will try to be classified into the categories defined
-//! in the [ErrorKind](crate::error::ErrorKind) enum.
+//! in the [`ErrorKind`](ErrorKind) enum.
 //! ```
 //! use eject::{device::Device, error::ErrorKind};
 //!
@@ -9,7 +9,7 @@
 //! assert_eq!(error.kind(), ErrorKind::NotFound);
 //! ```
 //!
-//! You can convert an [Error](crate::error::Error) to an [std::io::Error]
+//! You can convert an [`Error`] to an [`std::io::Error`]
 //! ```
 //! use eject::device::Device;
 //! use std::{fs::File, io};
@@ -22,7 +22,7 @@
 //! assert_eq!(std_err.raw_os_error(), eject_err.raw_os_error());
 //! ```
 //!
-//! If an error originated in the OS, you can get its OS specific code.
+//! If the error comes from the OS, you can get its OS specific code.
 //! ```
 //! use eject::device::Device;
 //!
@@ -32,14 +32,14 @@
 
 /// Result returned by functions in this crate.
 ///
-/// See the [error][crate::error] module docs for details and examples.
+/// See the [`error`][crate::error] module docs for details and examples.
 pub type Result<T> = core::result::Result<T, Error>;
 
 #[derive(thiserror::Error, Debug, Clone)]
 #[error("{}", message)]
 /// Error type for functions in this crate.
 ///
-/// See the [error][crate::error] module docs for more details and examples.
+/// See the [`error`][crate::error] module docs for more details and examples.
 pub struct Error {
     /// OS error code, or 0 if the error doesn't come from the OS.
     pub(crate) code: i32,
@@ -80,11 +80,11 @@ impl From<Error> for std::io::Error {
 #[non_exhaustive]
 /// General categories for OS and library errors.
 ///
-/// Bear in mind that errors that are currently `Unknown` may be moved to
+/// Bear in mind that errors that are currently [`Unknown`][Self::Unknown] may be moved to
 /// a different category in the future. This would not be considered a breaking
-/// change. Instead of matching against `Unknown`, use a wildcard pattern: `_ => `
+/// change. Instead of matching against [`Unknown`][Self::Unknown], use a wildcard pattern: `_ => `
 ///
-/// See the [error][crate::error] module docs for details and examples.
+/// See the [`error`][crate::error] module docs for details and examples.
 pub enum ErrorKind {
     /// The operation failed due to a permission issue.
     AccessDenied,

@@ -6,7 +6,7 @@ use windows::Win32::Foundation::HANDLE;
 impl AsRawHandle for Device {
     #[inline]
     fn as_raw_handle(&self) -> RawHandle {
-        self.handle.0 .0.into()
+        self.handle.0 .0 as _
     }
 }
 
@@ -36,7 +36,7 @@ impl From<OwnedHandle> for Device {
 impl IntoRawHandle for Device {
     #[inline]
     fn into_raw_handle(self) -> RawHandle {
-        let handle = self.handle.0 .0.into();
+        let handle = self.handle.0 .0 as _;
         forget(self);
         handle
     }

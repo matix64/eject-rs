@@ -12,13 +12,14 @@ use std::{path::Path, time::Instant};
 
 /// A reference to a device that can be used to send commands.
 ///
-/// # Examples
+/// # Example
 ///
 /// ```no_run
 /// use eject::device::Device;
 ///
-/// let cdrom = Device::open("/dev/cdrom").unwrap();
-/// cdrom.eject().unwrap();
+/// let cdrom = Device::open("/dev/cdrom")?;
+/// cdrom.eject()?;
+/// # eject::error::Result::Ok(())
 /// ```
 pub struct Device {
     handle: DeviceHandle,
@@ -80,7 +81,7 @@ impl Device {
     }
 
     /// Prevents the medium from being ejected, for example by pressing the button on a CD drive.
-    /// In case of success returns an [EjectionLock] that will release the lock when dropped.
+    /// In case of success returns an [`EjectionLock`] that will release the lock when dropped.
     ///
     /// # Platform specific behavior
     ///

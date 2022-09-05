@@ -1,36 +1,23 @@
 //! A crate to control the tray of your CD drive.
 //!
+//! [`Device`][device::Device] contains methods to open drives and send commands to them.
+//!
+//! [`cd_drives`][discovery::cd_drives] allows you to find all CD drives on a system.
+//!
 //! # Example
 //!
-//!```no_run
-//! use eject::{device::{Device, DriveStatus}, discovery::cd_drives};
+//! ```no_run
+//! use eject::{device::Device, discovery::cd_drives};
 //!
-//! # fn main() -> eject::error::Result<()> {
-//! // Find a drive by its path
+//! // Open the drive at this path
 //! let cdrom = Device::open("/dev/cdrom")?;
+//! // Or get the first one available
+//! let cdrom_path = cd_drives().next().unwrap();
+//! let cdrom = Device::open(&cdrom_path)?;
 //! // Open the tray
 //! cdrom.eject()?;
-//!
-//! // Get the paths of all CD drives
-//! for path in cd_drives() {
-//!     // Print the path
-//!     println!("Drive {:?}:", path);
-//!     // Access the drive
-//!     let drive = Device::open(path)?;
-//!     // Print its status
-//!     match drive.status()? {
-//!         DriveStatus::Empty =>
-//!             println!("The tray is closed and no disc is inside"),
-//!         DriveStatus::TrayOpen =>
-//!             println!("The tray is open"),
-//!         DriveStatus::NotReady =>
-//!             println!("This drive is not ready yet"),
-//!         DriveStatus::Loaded =>
-//!             println!("There's a disc inside"),
-//!     }
-//! }
-//! # Ok(())}
-//!```
+//! # eject::error::Result::Ok(())
+//! ```
 
 #![deny(unsafe_op_in_unsafe_fn)]
 #![warn(missing_docs)]

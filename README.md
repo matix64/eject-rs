@@ -8,6 +8,12 @@ A Rust library to control the tray of your CD drive.
 
 Currently supporting Windows and Linux.
 
+# Features
+
+- [x] Find installed drives.
+- [x] Open, close and lock the tray.
+- [x] Query current tray position and whether there's a disc inside.
+
 # Examples
 
 ## Basic usage

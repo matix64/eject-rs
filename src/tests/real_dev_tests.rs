@@ -38,7 +38,7 @@ fn b_retract() {
 fn b_status() {
     let dev = get_device();
     let mut status = dev.status().unwrap();
-    for _ in 0..10 {
+    for _ in 0..20 {
         if status == DriveStatus::Empty || status == DriveStatus::Loaded {
             break;
         }

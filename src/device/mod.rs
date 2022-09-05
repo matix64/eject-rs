@@ -80,7 +80,8 @@ impl Device {
         }
     }
 
-    /// Prevents the medium from being ejected, for example by pressing the button on a CD drive.
+    /// Prevents the medium from being ejected, even if the eject button is pressed.
+    ///
     /// In case of success returns an [`EjectionLock`] that will release the lock when dropped.
     ///
     /// # Platform specific behavior

@@ -1,4 +1,4 @@
-use crate::platform::discovery::CdDrives as CdDrivesImpl;
+use crate::{error::Result, platform::discovery::CdDrives as CdDrivesImpl};
 use std::path::PathBuf;
 
 /// Returns an iterator over the paths of all available CD drives.
@@ -8,17 +8,17 @@ use std::path::PathBuf;
 /// use eject::{discovery::cd_drives, device::Device};
 ///
 /// # fn main() -> Result<(), Box<dyn std::error::Error>> {
-/// for path in cd_drives() {
+/// for path in cd_drives()? {
 ///     println!("Found a drive at {:?}", path);
 ///     println!("Ejecting disc...");
 ///     Device::open(&path)?.eject()?;
 /// }
 /// # Ok(())}
 /// ```
-pub fn cd_drives() -> CdDrives {
-    CdDrives {
-        inner: CdDrivesImpl::new(),
-    }
+pub fn cd_drives() -> Result<CdDrives> {
+    Ok(CdDrives {
+        inner: CdDrivesImpl::new()?,
+    })
 }
 
 /// An iterator over the paths of all available CD drives.

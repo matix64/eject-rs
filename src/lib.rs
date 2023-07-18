@@ -12,7 +12,7 @@
 //! // Open the drive at this path
 //! let cdrom = Device::open("/dev/cdrom")?;
 //! // Or get the first one available
-//! let cdrom_path = cd_drives().next().unwrap();
+//! let cdrom_path = cd_drives()?.next().unwrap();
 //! let cdrom = Device::open(&cdrom_path)?;
 //! // Open the tray
 //! cdrom.eject()?;

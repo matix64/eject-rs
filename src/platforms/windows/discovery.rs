@@ -1,4 +1,5 @@
 use super::device::DeviceHandle;
+use crate::error::Result;
 use std::path::PathBuf;
 
 pub const CDROM_PATHS: &[&str] = &["CdRom0"];
@@ -8,8 +9,8 @@ pub struct CdDrives {
 }
 
 impl CdDrives {
-    pub fn new() -> Self {
-        Self { next_i: 0 }
+    pub fn new() -> Result<Self> {
+        Ok(Self { next_i: 0 })
     }
 }
 

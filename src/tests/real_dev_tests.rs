@@ -67,7 +67,9 @@ fn c_lock_ejection() {
 fn d_cd_drives_list() {
     print!(
         "\n  found drives: {:?}\n... ",
-        cd_drives().collect::<Vec<_>>()
+        cd_drives()
+            .expect("create cd_drives iterator")
+            .collect::<Vec<_>>()
     );
 }
 
